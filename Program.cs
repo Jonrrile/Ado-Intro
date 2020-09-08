@@ -36,6 +36,9 @@ namespace Roommates
             {
                 Console.WriteLine($"{room.Id} {room.Name} {room.MaxOccupancy}");
             }
+            roomRepo.Delete(8);
+
+            Console.WriteLine("Deleting");
         }
 
     }
