@@ -137,9 +137,6 @@ VALUES (@name, @maxOccupancy)";
                 }
             }
         }
-        public List<Roommate> GetAll()
-        {
 
-        }
     }
 }
