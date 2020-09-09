@@ -54,31 +54,20 @@ namespace Roommates.Repositories
                 }
             }
         }
-        public Roommate GetById(int id)
+        public void Insert(Roommate roommate)
         {
             using (SqlConnection conn = Connection)
             {
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = "SELECT FirstName FROM Roommate WHERE Id = @id";
-                    cmd.Parameters.AddWithValue("@id", id);
-                    SqlDataReader reader = cmd.ExecuteReader();
+                    cmd.CommandText = @"INSERT INTO Roommate (Firstname)
+                            OUTPUT INSERTED.Id
+VALUES (@firstname)";
+                    cmd.Parameters.AddWithValue("@FirstName", roommate.Firstname);
+                    int id = (int)cmd.ExecuteScalar();
 
-                    Roommate roommate = null;
-
-                    if (reader.Read())
-                    {
-                        roommate = new Roommate
-                        {
-                            Id = id,
-                            Firstname = reader.GetString(reader.GetOrdinal("FirstName"))
-                        };
-                    }
-                    reader.Close();
-
-                    return roommate;
-
+                    roommate.Id = id;
                 }
             }
         }
