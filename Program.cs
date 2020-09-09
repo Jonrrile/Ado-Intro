@@ -39,7 +39,19 @@ namespace Roommates
             roomRepo.Delete(8);
 
             Console.WriteLine("Deleting");
+
+            RoommateRepository roommateRepo = new RoommateRepository(CONNECTION_STRING);
+            Console.WriteLine("Getting All Roommates:");
+            Console.WriteLine();
+
+            List<Roommate> allRoommates = roommateRepo.GetAll();
+
+            foreach (Roommate roommate in allRoommates)
+            {
+                Console.WriteLine($"{roommate.Id} {roommate.Firstname}");
+            }
         }
+
 
     }
 }

@@ -17,41 +17,43 @@ namespace Roommates.Repositories
         public RoommateRepository(string connectionString) : base(connectionString) { }
 
         // ...We'll add some methods shortly...
-    }
-    public List<Roommate> GetAll()
-    {
-        using (SqlConnection conn = Connection)
+
+        public List<Roommate> GetAll()
         {
-            conn.Open();
-
-            using (SqlCommand cmd = conn.CreateCommand())
+            using (SqlConnection conn = Connection)
             {
-                cmd.CommandText = "SELECT Id, FirstName, RoomId FROM Roommates";
+                conn.Open();
 
-                SqlDataReader reader = cmd.ExecuteReader();
-
-                List<Roommate> roommates = new List<Roommate>();
-
-                while (reader.Read())
+                using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    int IdColumnPosition = reader.GetOrdinal("Id");
-                    int IdValue = reader.GetInt32(IdColumnPosition);
-                    int FirstNameColumnPosition = reader.GetOrdinal("FirstName");
-                    string FirstNameValue = reader.GetString(FirstNameColumnPosition);
+                    cmd.CommandText = "SELECT Id, FirstName FROM Roommate";
 
-                    Roommate roommate = new Roommate
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    List<Roommate> roommates = new List<Roommate>();
+
+                    while (reader.Read())
                     {
-                        Id = IdValue,
-                        Firstname = FirstNameValue
-                    };
+                        int IdColumnPosition = reader.GetOrdinal("Id");
+                        int IdValue = reader.GetInt32(IdColumnPosition);
+                        int FirstNameColumnPosition = reader.GetOrdinal("FirstName");
+                        string FirstNameValue = reader.GetString(FirstNameColumnPosition);
 
-                    roommates.Add(roommate);
+                        Roommate roommate = new Roommate
+                        {
+                            Id = IdValue,
+                            Firstname = FirstNameValue
+                        };
+
+                        roommates.Add(roommate);
+                    }
+                    reader.Close();
+                    return roommates;
                 }
-                reader.Close();
-                return rooms;
             }
         }
     }
 }
+
 
  
