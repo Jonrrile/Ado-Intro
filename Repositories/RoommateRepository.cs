@@ -26,7 +26,7 @@ namespace Roommates.Repositories
 
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = "SELECT Id, FirstName FROM Roommate";
+                    cmd.CommandText = "SELECT Id, FirstName, RoomId FROM Roommate";
 
                     SqlDataReader reader = cmd.ExecuteReader();
 
@@ -38,17 +38,47 @@ namespace Roommates.Repositories
                         int IdValue = reader.GetInt32(IdColumnPosition);
                         int FirstNameColumnPosition = reader.GetOrdinal("FirstName");
                         string FirstNameValue = reader.GetString(FirstNameColumnPosition);
-
+                       // int RoomIdColumnPosition = reader.GetOrdinal("Room");
+                       // string RoomValue = reader.GetString(RoomIdColumnPosition);
                         Roommate roommate = new Roommate
                         {
                             Id = IdValue,
-                            Firstname = FirstNameValue
+                            Firstname = FirstNameValue,
+                           // Room = RoomValue
                         };
 
                         roommates.Add(roommate);
                     }
                     reader.Close();
                     return roommates;
+                }
+            }
+        }
+        public Roommate GetById(int id)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = "SELECT FirstName FROM Roommate WHERE Id = @id";
+                    cmd.Parameters.AddWithValue("@id", id);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    Roommate roommate = null;
+
+                    if (reader.Read())
+                    {
+                        roommate = new Roommate
+                        {
+                            Id = id,
+                            Firstname = reader.GetString(reader.GetOrdinal("FirstName"))
+                        };
+                    }
+                    reader.Close();
+
+                    return roommate;
+
                 }
             }
         }

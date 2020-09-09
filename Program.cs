@@ -48,7 +48,12 @@ namespace Roommates
 
             foreach (Roommate roommate in allRoommates)
             {
-                Console.WriteLine($"{roommate.Id} {roommate.Firstname}");
+                Console.WriteLine($"{roommate.Id} {roommate.Firstname} {roommate.Room}");
+                Console.WriteLine();
+                Console.WriteLine("Getting Roommate with specific Id");
+
+                Roommate singleRoommate = roommateRepo.GetById(1);
+                Console.WriteLine($"{singleRoommate.Id} {singleRoommate.Firstname}");
             }
         }
 
